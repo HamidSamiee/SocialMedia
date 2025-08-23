@@ -81,8 +81,8 @@ module.exports = {
   			'465': '465px'
   		},
   		fontFamily: {
-  			inter: [
-  				'Inter',
+  			vazir: [
+				'Vazirmatn',
   				'sans-serif'
   			]
   		},

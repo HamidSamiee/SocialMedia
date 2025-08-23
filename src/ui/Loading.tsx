@@ -12,7 +12,6 @@ const Loading = () => {
 
       {/* متن لودینگ با انیمیشن پالس */}
       <div className="flex items-center space-x-2">
-        <h2 className="text-xl font-semibold text-white">Loading</h2>
         <div className="flex space-x-1">
           <div
             className="w-2 h-2 bg-white rounded-full animate-pulse"
@@ -26,7 +25,8 @@ const Loading = () => {
             className="w-2 h-2 bg-white rounded-full animate-pulse"
             style={{ animationDelay: "300ms" }}
           ></div>
-        </div>
+        </div>        
+        <h2 className="text-xl font-semibold text-white">در حال بارگذاری</h2>
       </div>
 
       {/* پیشرفت بارگذاری */}
