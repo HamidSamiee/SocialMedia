@@ -19,7 +19,7 @@ export const INITIAL_STATE = {
 export const sidebarLinks = [
   {
     imgURL: "/assets/icons/home.svg",
-    route: "/",
+    route: "/home",
     label: "صفحه اصلی",
   },
   {
@@ -47,7 +47,7 @@ export const sidebarLinks = [
 export const bottombarLinks = [
   {
     imgURL: "/assets/icons/home.svg",
-    route: "/",
+    route: "/home",
     label: "صفحه اصلی",
   },
   {

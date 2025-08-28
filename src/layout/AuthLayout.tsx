@@ -6,7 +6,7 @@ const AuthLayout = () => {
     <>
       {
         isAuthenticated ?(
-          <Navigate to="/" />
+          <Navigate to="/home" />
         ):(
           <div className="flex ">
             <section className="flex flex-1 py-10 flex-col items-center justify-center">

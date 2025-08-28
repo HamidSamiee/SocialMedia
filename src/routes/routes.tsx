@@ -21,7 +21,7 @@ export const routes: RouteObject[] = [
     element: <RootLayout />,
     children: [
       // مسیرهای عمومی
-      { index: true, path: "/", element: <Home /> },
+      { index: true, path: "/home", element: <Home /> },
       { path: "/explore", element: <Explore /> },
       { path: "/saved", element: <Saved /> },
       { path: "/all-users", element: <AllUsers /> },
@@ -47,22 +47,6 @@ export const routes: RouteObject[] = [
       //   ]
       // },
       
-      // مسیرهای ادمین
-    //   {
-    //     element: <PrivateRoute allowedRoles={['admin']} />,
-    //     children: [
-    //       { 
-    //         path: "/admin",
-    //         element: <AdminDashboard />,
-    //         children: [
-    //           { path: "products", element: <ProductsManagement /> },
-    //           { path: "orders", element: <OrdersManagement /> },
-    //           { path: "users", element: <UsersManagement /> },
-    //           { path: "stats", element: <StatsDashboard /> }
-    //         ]
-    //       }
-    //     ]
-    //   },
    
     //   { path: "*", element: <NotFound /> },
     ]

@@ -42,7 +42,7 @@ const SigninForm = () => {
 
         if (isLogedIn) {
           form.reset();
-          navigate('/');
+          navigate('/home');
           toast.success(" ورود با موفقیت انجام شد");
         } else {
             throw new Error("احراز هویت انجام نشد");

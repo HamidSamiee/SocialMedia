@@ -1,4 +1,5 @@
-import { GridPostList, Loader } from "@/components/shared";
+import GridPostList from "@/components/shared/GridPostList";
+import Loader from "@/components/shared/Loader";
 import { useGetCurrentUser } from "@/lib/react-query/queries";
 
 const LikedPosts = () => {
@@ -6,7 +7,7 @@ const LikedPosts = () => {
 
   if (!currentUser)
     return (
-      <div className="flex-center w-full h-full">
+      <div className="flex-center w-full h-full ">
         <Loader />
       </div>
     );
@@ -14,7 +15,7 @@ const LikedPosts = () => {
   return (
     <>
       {currentUser.liked.length === 0 && (
-        <p className="text-light-4">No liked posts</p>
+        <p className="text-light-4">هیچ پستی لایک نشده</p>
       )}
 
       <GridPostList posts={currentUser.liked} showStats={false} />

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import  PostStats from "@/components/shared/PostStats";
 import { multiFormatDateString } from "@/lib/utils";
 import { useUserContext } from "@/hooks/useUserContext";
+import { toPersianNumbers } from "@/utils/toPersianNumbers";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type PostCardProps = {
   post: Models.Document;
@@ -29,12 +31,12 @@ const PostCard = ({ post }: PostCardProps) => {
           </Link>
 
           <div className="flex flex-col">
-            <p className="base-medium lg:body-bold text-light-1">
+            <p className="base-medium lg:body-bold text-light-4">
               {post.creator.name}
             </p>
             <div className="flex-center gap-2 text-light-3">
               <p className="subtle-semibold lg:small-regular ">
-                {multiFormatDateString(post.$createdAt)}
+                {toPersianNumbers(multiFormatDateString(post.$createdAt))}
               </p>
               •
               <p className="subtle-semibold lg:small-regular">
@@ -43,17 +45,23 @@ const PostCard = ({ post }: PostCardProps) => {
             </div>
           </div>
         </div>
-
-        <Link
-          to={`/update-post/${post.$id}`}
-          className={`${user.id !== post.creator.$id && "hidden"}`}>
-          <img
-            src={"/assets/icons/edit.svg"}
-            alt="edit"
-            width={20}
-            height={20}
-          />
-        </Link>
+        <Tooltip>
+          <TooltipTrigger>
+            <Link
+              to={`/update-post/${post.$id}`}
+              className={`${user.id !== post.creator.$id && "hidden"}`}>
+              <img
+                src={"/assets/icons/edit.svg"}
+                alt="edit"
+                width={20}
+                height={20}
+              />
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>ویرایش پست</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       <Link to={`/posts/${post.$id}`}>

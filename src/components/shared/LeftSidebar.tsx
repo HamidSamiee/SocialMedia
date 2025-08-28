@@ -34,7 +34,17 @@ const LeftSidebar = () => {
             </h1>
           </div>
 
-        {isLoading || !user.email ? (
+        { !user.email ?
+           <div className="flex-center">
+              <Link
+                to="/sign-in"
+                className="bg-primary-500  px-2 py-1 rounded-md text-white font-semibold text-lg mr-4 ">
+                ورود
+              </Link>
+           </div> 
+        :
+        
+        isLoading ? (
           <div className="h-14">
             <Loader />
           </div>
@@ -43,7 +53,7 @@ const LeftSidebar = () => {
             <img
               src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
               alt="profile"
-              className="h-14 w-14 rounded-full"
+              className="h-14 w-14 rounded-full border-2 border-white animate-pulse"
             />
             <div className="flex flex-col">
               <p className="body-bold text-white">{user.name}</p>

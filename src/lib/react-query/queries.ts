@@ -2,7 +2,7 @@ import {
   useQuery,
   useMutation,
   useQueryClient,
-  // useInfiniteQuery,
+  useInfiniteQuery,
 } from "@tanstack/react-query";
 
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
@@ -13,16 +13,16 @@ import {
   signOutAccount,
   getUsers,
   createPost,
-  // getPostById,
+  getPostById,
   updatePost,
-  // getUserPosts,
+  getUserPosts,
   deletePost,
   likePost,
-  // getUserById,
-  // updateUser,
+  getUserById,
+  updateUser,
   getRecentPosts,
-  // getInfinitePosts,
-  // searchPosts,
+  getInfinitePosts,
+  searchPosts,
   savePost,
   deleteSavedPost,
 } from "@/lib/appwrite/api";
@@ -30,7 +30,7 @@ import {
    INewPost,
    INewUser, 
    IUpdatePost,
-  //   IUpdateUser 
+   IUpdateUser 
   } from "@/types";
 
 // ============================================================
@@ -76,14 +76,30 @@ export const useSignOutAccount = () => {
 //     },
 //   });
 // };
+export const useGetPosts = () => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+    queryFn: getInfinitePosts,
+    initialPageParam: null, // اضافه کردن initialPageParam اجباری
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || lastPage.documents.length === 0) {
+        return null;
+      }
 
-// export const useSearchPosts = (searchTerm: string) => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
-//     queryFn: () => searchPosts(searchTerm),
-//     enabled: !!searchTerm,
-//   });
-// };
+      // استفاده از $id آخرین سند به عنوان cursor برای صفحه بعدی
+      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
+      return lastId;
+    },
+  });
+};
+
+export const useSearchPosts = (searchTerm: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
+    queryFn: () => searchPosts(searchTerm),
+    enabled: !!searchTerm,
+  });
+};
 
 export const useGetRecentPosts = () => {
   return useQuery({
@@ -104,21 +120,21 @@ export const useCreatePost = () => {
   });
 };
 
-// export const useGetPostById = (postId?: string) => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
-//     queryFn: () => getPostById(postId),
-//     enabled: !!postId,
-//   });
-// };
+export const useGetPostById = (postId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
+    queryFn: () => getPostById(postId),
+    enabled: !!postId,
+  });
+};
 
-// export const useGetUserPosts = (userId?: string) => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_USER_POSTS, userId],
-//     queryFn: () => getUserPosts(userId),
-//     enabled: !!userId,
-//   });
-// };
+export const useGetUserPosts = (userId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_POSTS, userId],
+    queryFn: () => getUserPosts(userId),
+    enabled: !!userId,
+  });
+};
 
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
@@ -227,25 +243,25 @@ export const useGetUsers = (limit?: number) => {
   });
 };
 
-// export const useGetUserById = (userId: string) => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_USER_BY_ID, userId],
-//     queryFn: () => getUserById(userId),
-//     enabled: !!userId,
-//   });
-// };
+export const useGetUserById = (userId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_BY_ID, userId],
+    queryFn: () => getUserById(userId),
+    enabled: !!userId,
+  });
+};
 
-// export const useUpdateUser = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation({
-//     mutationFn: (user: IUpdateUser) => updateUser(user),
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries({
-//         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
-//       });
-//       queryClient.invalidateQueries({
-//         queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id],
-//       });
-//     },
-//   });
-// };
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (user: IUpdateUser) => updateUser(user),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id],
+      });
+    },
+  });
+};

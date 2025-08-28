@@ -1,16 +1,12 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-
-import { Button } from "@/components/ui";
-import { Loader } from "@/components/shared";
-import { GridPostList, PostStats } from "@/components/shared";
-
-import {
-  useGetPostById,
-  useGetUserPosts,
-  useDeletePost,
-} from "@/lib/react-query/queries";
+import {useGetPostById,useGetUserPosts,useDeletePost} from "@/lib/react-query/queries";
 import { multiFormatDateString } from "@/lib/utils";
-import { useUserContext } from "@/context/AuthContext";
+import { useUserContext } from "@/hooks/useUserContext";
+import { Button } from "@/components/ui/button";
+import Loader from "@/components/shared/Loader";
+import PostStats from "@/components/shared/PostStats";
+import GridPostList from "@/components/shared/GridPostList";
+import { toPersianNumbers } from "@/utils/toPersianNumbers";
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -35,7 +31,7 @@ const PostDetails = () => {
   return (
     <div className="post_details-container">
       <div className="hidden md:flex max-w-5xl w-full">
-        <Button
+        <Button 
           onClick={() => navigate(-1)}
           variant="ghost"
           className="shad-button_ghost">
@@ -45,18 +41,18 @@ const PostDetails = () => {
             width={24}
             height={24}
           />
-          <p className="small-medium lg:base-medium">Back</p>
+          <p className="small-medium lg:base-medium">برگشت</p>
         </Button>
       </div>
 
       {isLoading || !post ? (
         <Loader />
       ) : (
-        <div className="post_details-card">
+        <div className="post_details-card overflow-hidden ">
           <img
             src={post?.imageUrl}
             alt="creator"
-            className="post_details-img"
+            className="post_details-img "
           />
 
           <div className="post_details-info">
@@ -73,12 +69,12 @@ const PostDetails = () => {
                   className="w-8 h-8 lg:w-12 lg:h-12 rounded-full"
                 />
                 <div className="flex gap-1 flex-col">
-                  <p className="base-medium lg:body-bold text-light-1">
+                  <p className="base-medium lg:body-bold text-light-4">
                     {post?.creator.name}
                   </p>
                   <div className="flex-center gap-2 text-light-3">
                     <p className="subtle-semibold lg:small-regular ">
-                      {multiFormatDateString(post?.$createdAt)}
+                      {toPersianNumbers(multiFormatDateString(post?.$createdAt))}
                     </p>
                     •
                     <p className="subtle-semibold lg:small-regular">
@@ -142,7 +138,7 @@ const PostDetails = () => {
         <hr className="border w-full border-dark-4/80" />
 
         <h3 className="body-bold md:h3-bold w-full my-10">
-          More Related Posts
+      پست های مربوطه 
         </h3>
         {isUserPostLoading || !relatedPosts ? (
           <Loader />

@@ -49,7 +49,7 @@ const SignupForm = () => {
 
         if (isLogedIn) {
           form.reset();
-          navigate('/');
+          navigate('/home');
           toast.success("ثبت نام و ورود با موفقیت انجام شد");
         } else {
             throw new Error("احراز هویت انجام نشد");

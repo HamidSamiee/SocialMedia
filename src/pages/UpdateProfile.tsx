@@ -11,16 +11,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/components/ui/use-toast";
-import { Textarea, Input, Button } from "@/components/ui";
-import { ProfileUploader, Loader } from "@/components/shared";
-
 import { ProfileValidation } from "@/lib/validation";
-import { useUserContext } from "@/context/AuthContext";
+import { useUserContext }  from "@/hooks/useUserContext";
 import { useGetUserById, useUpdateUser } from "@/lib/react-query/queries";
+import Loader from "@/components/shared/Loader";
+import toast from "react-hot-toast";
+import ProfileUploader from "@/components/shared/ProfileUploader";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const UpdateProfile = () => {
-  const { toast } = useToast();
+
   const navigate = useNavigate();
   const { id } = useParams();
   const { user, setUser } = useUserContext();
@@ -37,7 +39,7 @@ const UpdateProfile = () => {
 
   // Queries
   const { data: currentUser } = useGetUserById(id || "");
-  const { mutateAsync: updateUser, isLoading: isLoadingUpdate } =
+  const { mutateAsync: updateUser, isPending: isLoadingUpdate } =
     useUpdateUser();
 
   if (!currentUser)
@@ -59,9 +61,9 @@ const UpdateProfile = () => {
     });
 
     if (!updatedUser) {
-      toast({
-        title: `Update user failed. Please try again.`,
-      });
+      toast.error(
+       `Update user failed. Please try again.`
+      );
     }
 
     setUser({
@@ -70,6 +72,7 @@ const UpdateProfile = () => {
       bio: updatedUser?.bio,
       imageUrl: updatedUser?.imageUrl,
     });
+    toast.success("پروفایل  شما بروز شد")
     return navigate(`/profile/${id}`);
   };
 
@@ -82,9 +85,9 @@ const UpdateProfile = () => {
             width={36}
             height={36}
             alt="edit"
-            className="invert-white"
+            className=""
           />
-          <h2 className="h3-bold md:h2-bold text-left w-full">Edit Profile</h2>
+          <h2 className="h3-bold md:h2-bold text-right w-full">ویرایش پروفایل</h2>
         </div>
 
         <Form {...form}>
@@ -112,7 +115,7 @@ const UpdateProfile = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="shad-form_label">Name</FormLabel>
+                  <FormLabel className="shad-form_label">نام و نام خانوادگی</FormLabel>
                   <FormControl>
                     <Input type="text" className="shad-input" {...field} />
                   </FormControl>
@@ -126,7 +129,7 @@ const UpdateProfile = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="shad-form_label">Username</FormLabel>
+                  <FormLabel className="shad-form_label">نام کاربری</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -145,7 +148,7 @@ const UpdateProfile = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="shad-form_label">Email</FormLabel>
+                  <FormLabel className="shad-form_label">آدرس پست الکترونیکی</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
@@ -164,7 +167,7 @@ const UpdateProfile = () => {
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="shad-form_label">Bio</FormLabel>
+                  <FormLabel className="shad-form_label">بیوگرافی</FormLabel>
                   <FormControl>
                     <Textarea
                       className="shad-textarea custom-scrollbar"
@@ -181,14 +184,14 @@ const UpdateProfile = () => {
                 type="button"
                 className="shad-button_dark_4"
                 onClick={() => navigate(-1)}>
-                Cancel
+                لغو
               </Button>
               <Button
                 type="submit"
                 className="shad-button_primary whitespace-nowrap"
                 disabled={isLoadingUpdate}>
                 {isLoadingUpdate && <Loader />}
-                Update Profile
+                آپدیت پروفایل
               </Button>
             </div>
           </form>

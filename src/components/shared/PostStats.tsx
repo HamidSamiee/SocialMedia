@@ -9,6 +9,8 @@ import {
   useDeleteSavedPost,
   useGetCurrentUser,
 } from "@/lib/react-query/queries";
+import { toPersianNumbers } from "@/utils/toPersianNumbers";
+import toast from "react-hot-toast";
 
 type PostStatsProps = {
   post: Models.Document;
@@ -41,16 +43,26 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   ) => {
     e.stopPropagation();
 
-    let likesArray = [...likes];
+   if (currentUser) {
+       let likesArray = [...likes];
 
-    if (likesArray.includes(userId)) {
-      likesArray = likesArray.filter((Id) => Id !== userId);
-    } else {
-      likesArray.push(userId);
+        if (likesArray.includes(userId)) {
+          likesArray = likesArray.filter((Id) => Id !== userId);
+          toast(" پست از لیست علاقه مندی ها حذف شد",
+                {duration: 6000,}
+              );
+        } else {
+          likesArray.push(userId);
+          toast.success(" پست به لیست علاقه مندی ها اضافه شد")
+        }
+
+        setLikes(likesArray);
+        likePost({ postId: post.$id, likesArray });
+    }else{
+        toast("لطفا لاگین کنید",
+        {duration: 6000,}
+        );
     }
-
-    setLikes(likesArray);
-    likePost({ postId: post.$id, likesArray });
   };
 
   const handleSavePost = (
@@ -58,13 +70,22 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   ) => {
     e.stopPropagation();
 
-    if (savedPostRecord) {
-      setIsSaved(false);
-      return deleteSavePost(savedPostRecord.$id);
+    if (currentUser) {
+      if (savedPostRecord) {
+        setIsSaved(false);
+        toast("ذخیره پست حذف شد",
+        {duration: 6000,}
+        );
+        return deleteSavePost(savedPostRecord.$id);
+      }
+      savePost({ userId: userId, postId: post.$id });
+      setIsSaved(true);
+      toast.success("پست ذخیره شد")
+    }else{
+        toast("لطفا لاگین کنید",
+        {duration: 6000,}
+        );
     }
-
-    savePost({ userId: userId, postId: post.$id });
-    setIsSaved(true);
   };
 
   const containerStyles = location.pathname.startsWith("/profile")
@@ -87,7 +108,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
           onClick={(e) => handleLikePost(e)}
           className="cursor-pointer"
         />
-        <p className="small-medium lg:base-medium">{likes.length}</p>
+        <p className="small-medium lg:base-medium ">{toPersianNumbers(likes.length)}</p>
       </div>
 
       <div className="flex gap-2">

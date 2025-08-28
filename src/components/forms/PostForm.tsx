@@ -60,7 +60,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
     if (!newPost) {
       toast.error( `${action}پست ناموفق بود لطفا دوباره تلاش کنید .`);
     }
-    navigate("/");
+    navigate("/home");
   };
 
   return (
