@@ -32,6 +32,7 @@ import {
    IUpdatePost,
    IUpdateUser 
   } from "@/types";
+import { useNavigate } from "react-router-dom";
 
 // ============================================================
 // AUTH QUERIES
@@ -51,8 +52,14 @@ export const useSignInAccount = () => {
 };
 
 export const useSignOutAccount = () => {
+
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: signOutAccount,
+    onSuccess: () => {
+      navigate("/sign-in")
+    },
   });
 };
 
