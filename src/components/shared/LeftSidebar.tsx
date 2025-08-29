@@ -89,14 +89,19 @@ const LeftSidebar = () => {
           })}
         </ul>
       </div>
+          {
+            user.email ? 
+              <Button
+                variant="ghost"
+                className="shad-button_ghost "
+                onClick={(e) => handleSignOut(e)}>
+                <img src="/assets/icons/logout.svg" alt="logout" />
+                <p className="small-medium lg:base-medium text-white ">خروج</p>
+              </Button>
+            :
+            <div className=""></div>
+          }
 
-      <Button
-        variant="ghost"
-        className="shad-button_ghost "
-        onClick={(e) => handleSignOut(e)}>
-        <img src="/assets/icons/logout.svg" alt="logout" />
-        <p className="small-medium lg:base-medium text-white ">خروج</p>
-      </Button>
     </nav>
   );
 };

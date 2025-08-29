@@ -15,13 +15,15 @@ const EditPost = lazy(() => import('@/pages/EditPost'));
 const PostDetails = lazy(() => import('@/pages/PostDetails'));
 const Profile = lazy(() => import('@/pages/Profile'));
 const UpdateProfile = lazy(() => import('@/pages/UpdateProfile'));
+const Start = lazy(() => import('@/pages/Start'));
 
 export const routes: RouteObject[] = [
+  { index: true, path: "/", element: <Start /> },
   {
     element: <RootLayout />,
     children: [
       // مسیرهای عمومی
-      { index: true, path: "/home", element: <Home /> },
+      { path: "/home", element: <Home /> },
       { path: "/explore", element: <Explore /> },
       { path: "/saved", element: <Saved /> },
       { path: "/all-users", element: <AllUsers /> },
